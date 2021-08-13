@@ -1,0 +1,36 @@
+version: '3'
+services:
+  minio:
+    image: minio/minio:latest
+    container_name: 'minio'
+    ports:
+      - 9090:9000
+    environment:
+      - MINIO_ROOT_USER=minio
+      - MINIO_ROOT_PASSWORD=minio123
+    entrypoint: sh
+    command: -c "
+      mkdir -p /data/.minio.sys/buckets;
+      cp -r /policies/* /data/.minio.sys/;
+      cp -r /export/* /data/;
+      /usr/bin/minio server /data;
+      "
+    volumes:
+      - ./docker/minio/data:/data
+      - ./docker/minio/export:/export      
+      - ./docker/minio/policies:/policies
+
+  aws-glue:
+    build: ./docker/aws-glue 
+    container_name: 'aws-glue'
+    ports:
+      - 8888:8888
+      - 4040:4040
+    entrypoint: sh
+    command: -c "
+      /home/jupyter/jupyter_start.sh
+      "
+    volumes:
+      - /home/bibagimon/.aws:/root/.aws:ro
+      - ./docker/jupyter/notebooks:/home/jupyter/jupyter_default_dir
+    
