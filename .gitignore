@@ -1,1 +1,2 @@
 docker/minio/data
+docker/jupyter/notebooks/.ipynb_checkpoints/*

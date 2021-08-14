@@ -21,7 +21,7 @@ services:
       - ./docker/minio/policies:/policies
 
   aws-glue:
-    build: ./docker/aws-glue 
+    image: amazon/aws-glue-libs:glue_libs_1.0.0_image_01
     container_name: 'aws-glue'
     ports:
       - 8888:8888
